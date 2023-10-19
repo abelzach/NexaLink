@@ -16,4 +16,4 @@ snarkjs groth16 setup ../circuit.r1cs pot12_final.ptau circuit_0000.zkey
 snarkjs zkey contribute circuit_0000.zkey circuit_0001.zkey --name="1st Contributor Name" -v -e="random text"
 
 # generate verifier contract
-snarkjs zkey export solidityverifier circuit_0001.zkey ../../../../foundry/src/Verifier.sol
+snarkjs zkey export solidityverifier circuit_0001.zkey ../../../contracts/Verifier.sol

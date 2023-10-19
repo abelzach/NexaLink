@@ -10,7 +10,7 @@
     "coverage": "hardhat coverage",
     "generate:proof": "bash scripts/generate-proof.sh",
     "node": "hardhat node",
-    "setup:circom": "bash scripts/setup-circom.sh",
+    "setup:circom": "bash scripts/install-circom.sh",
     "test": "hardhat test",
     "version:fix": "ts-node scripts/version-fix.ts"
   },
