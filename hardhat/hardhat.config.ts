@@ -33,9 +33,18 @@ const config: HardhatUserConfig = {
       url: `https://eth-mainnet.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`, 
       accounts
     },
+    goerli: {
+      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.ALCHEMY_API_KEY}`, 
+      accounts
+    },
+    fuji: {
+      url: `https://api.avax-test.network/ext/bc/C/rpc`,
+      chainId: 43113,
+      accounts
+    },
     mumbai: {
-        url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`, 
-        accounts
+      url: `https://polygon-mumbai.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`, 
+      accounts
     }
   },
   gasReporter: {
