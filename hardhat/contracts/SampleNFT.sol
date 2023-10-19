@@ -1,20 +1,21 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract SampleNFT is ERC721, ERC721URIStorage, Ownable {
-    constructor(address initialOwner)
+contract SampleNFT is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
+    uint256 private _nextTokenId;
+
+    constructor()
         ERC721("SampleNFT", "SNFT")
-        Ownable(initialOwner)
+        Ownable()
     {}
 
-    function safeMint(address to, uint256 tokenId, string memory uri)
-        public
-        onlyOwner
-    {
+    function safeMint(address to, string memory uri) public onlyOwner {
+        uint256 tokenId = _nextTokenId++;
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
     }
@@ -35,5 +36,9 @@ contract SampleNFT is ERC721, ERC721URIStorage, Ownable {
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function _burn(uint256 tokenId) internal virtual override(ERC721, ERC721URIStorage) {
+        super._burn(tokenId);
     }
 }
