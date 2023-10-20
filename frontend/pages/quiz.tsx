@@ -6,9 +6,36 @@ import Puzzle from './puzzle8.jsx'
 import Puzzle16 from './puzzle16.jsx'
 import clock from './clock.png'
 import { useEffect } from 'react'
+
 export default function Home(this: any) {
   const [type,setType] = React.useState(16);
   const [gameWon, setGameWon] = React.useState(false);
+  const [argument, setArgument] = React.useState(undefined);
+
+  const executeShellScript = async () => {
+    const serverUrl = 'http://localhost:3001';
+
+    try {
+      const response = await fetch(serverUrl + '/execute-script', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ argument }),
+      });
+
+
+      if (response.ok) {
+        const data = await response.text();
+        console.log(data);
+        window.alert("Congratulations");
+      } else {
+        console.error('Server error:', response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error('Request error:', error);
+    }
+  };
 
   function change() {
     if(type === 8)
@@ -19,6 +46,14 @@ export default function Home(this: any) {
   useEffect(() => {
     change();
   }, []);
+
+  const handleInputChange = (event:any) => {
+    setArgument(event.target.value);
+  };
+  const handleSubmit = () => {
+    console.log('Argument:', argument);
+    executeShellScript();
+  };
 
   const handleGameWin = (isGameWon:any) => {
     setGameWon(isGameWon);
@@ -107,11 +142,11 @@ export default function Home(this: any) {
         {
           gameWon?
           <div className=" pt-8">
-            <input type="text" id="large-input" className="ml-36 pl-20 w-full block mt-10 p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Enter SUI address'/>
-            <button type="button" className="text-lg mt-6 ml-60 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg px-8 py-3 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
+            <input type="text" id="large-input" className="ml-36 pl-20 w-full block mt-10 p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Enter SUI address' onChange={handleInputChange}/>
+            <button onClick={handleSubmit} type="button" className="text-lg mt-6 ml-60 text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg px-8 py-3 text-center inline-flex items-center dark:focus:ring-gray-600 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:bg-gray-700 mr-2 mb-2">
               
               Submit
-              </button>
+              </button >
             </div>
             :
             <></>
