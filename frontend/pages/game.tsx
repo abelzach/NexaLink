@@ -41,24 +41,24 @@ export default function Home() {
   const testSupabaseConnection = async () => {
     const obj = {
       "addresses": [
-        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16),
-        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16)
+        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString(),
+        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString()
       ],
       "chainIds": [
         "2",
         "5"
       ],
-      "tokenContract": parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16),
+      "tokenContract": parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString(),
       "tokenId": "0"
     }
 
     const poseidon = await buildPoseidon();
     const hash = poseidon.F.toString(poseidon([
-      obj["addresses"][0],
+      parseInt(obj["addresses"][0]),
       obj["chainIds"][0],
-      obj["addresses"][1],
+      parseInt(obj["addresses"][1]),
       obj["chainIds"][1],
-      obj["tokenContract"],
+      parseInt(obj["tokenContract"]),
       obj["tokenId"]
     ]));
 
@@ -67,23 +67,23 @@ export default function Home() {
     const secretBytes = utf8Encoder.encode(uri);
     const parts = split(randomBytes, 2, 2, secretBytes);
 
-    const tx1 = await contract?.connect(signer as Signer).transmit(
-      0,
-      2,
-      NexaReceiverAddress,
-      parts[1].toString(),
-      { value: ethers.utils.parseEther("0.1")}
-    )
-    await tx1.wait();
+    // const tx1 = await contract?.connect(signer as Signer).transmit(
+    //   0,
+    //   2,
+    //   NexaReceiverAddress,
+    //   parts[1].toString(),
+    //   { value: ethers.utils.parseEther("0.1")}
+    // )
+    // await tx1.wait();
 
-    const tx2 = await contract?.connect(signer as Signer).transmit(
-      0,
-      5,
-      NexaReceiverAddress,
-      parts[2].toString(),
-      { value: ethers.utils.parseEther("0.01")}
-    )
-    await tx2.wait();
+    // const tx2 = await contract?.connect(signer as Signer).transmit(
+    //   0,
+    //   5,
+    //   NexaReceiverAddress,
+    //   parts[2].toString(),
+    //   { value: ethers.utils.parseEther("0.01")}
+    // )
+    // await tx2.wait();
 
     const { data, error } = await supabase.from('nexalink')
     .insert([{ hash, obj, completed: false },
