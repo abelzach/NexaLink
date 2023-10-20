@@ -1,21 +1,7 @@
 import Link from 'next/link'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { PushAPI } from '@pushprotocol/restapi'
 import bg from './background.jpeg';
-// import { useSigner } from 'wagmi';
-
 export default function Home() {
-
-  // async function someFunction() {
-  // const {data: signer} = useSigner();
-  // const userAlice = await PushAPI.initialize(signer, { env: 'staging' });
-  //   // Rest of your code that uses userAlice
-  // }
-
-  // // Call the async function
-  // someFunction();
-
-
   return (
     <div  className='pt-10'
       style={{
