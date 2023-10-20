@@ -5,7 +5,8 @@ import clock from './clock.png'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { createClient } from '@supabase/supabase-js';
 import { buildPoseidonOpt as buildPoseidon } from 'circomlibjs';
-import shamir from 'shamir';
+import { split, join } from 'shamir';
+import { randomBytes } from 'crypto';
 import { 
   useAccount,
   useSigner 
@@ -18,7 +19,7 @@ import {
 } from "react";
 import { ethers, Signer, Contract } from 'ethers';
 import NexaSender from "../abis/NexaSender.json";
-import { NexaSenderAddress } from "../../hardhat/contractAddress";
+import { NexaSenderAddress, NexaReceiverAddress } from "../../hardhat/contractAddress";
 
 export default function Home() {
 
@@ -60,7 +61,29 @@ export default function Home() {
       obj["tokenContract"],
       obj["tokenId"]
     ]));
-    
+
+    const uri = "https://ipfs.io/ipfs/bafybeibc5sgo2plmjkq2tzmhrn54bk3crhnc23zd2msg4ea7a4pxrkgfna/3350";
+    const utf8Encoder = new TextEncoder();
+    const secretBytes = utf8Encoder.encode(uri);
+    const parts = split(randomBytes, 2, 2, secretBytes);
+
+    const tx1 = await contract?.connect(signer as Signer).transmit(
+      0,
+      2,
+      NexaReceiverAddress,
+      parts[1].toString(),
+      { value: ethers.utils.parseEther("0.1")}
+    )
+    await tx1.wait();
+
+    const tx2 = await contract?.connect(signer as Signer).transmit(
+      0,
+      5,
+      NexaReceiverAddress,
+      parts[2].toString(),
+      { value: ethers.utils.parseEther("0.01")}
+    )
+    await tx2.wait();
 
     const { data, error } = await supabase.from('nexalink')
     .insert([{ hash, obj, completed: false },
@@ -70,6 +93,8 @@ export default function Home() {
     } else {
       console.log("Supabase connection successful");
     }
+
+    window.alert(`Created game with hash ${hash}`);
   };
   
 
