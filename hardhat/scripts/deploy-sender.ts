@@ -2,7 +2,7 @@ import { ethers } from "hardhat";
 import { Contract } from "ethers";
 import fs from 'fs';
 
-const NFTAddress = "";
+const NFTAddress = "0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a";
 const WormholeRelayer = "0xA3cF45939bD6260bcFe3D66bc73d60f19e49a8BB";
 
 async function main() {
@@ -12,6 +12,7 @@ async function main() {
   const Verifier = await ethers.getContractFactory("Verifier");
   const verifier = await Verifier.deploy();
   await verifier.deployed();
+  console.log("Verifier deployed to:", verifier.address);
 
   const NexaSender = await ethers.getContractFactory("NexaSender");
   const nexaSender = await NexaSender.deploy(
@@ -20,6 +21,7 @@ async function main() {
     verifier.address
   );
   await nexaSender.deployed();
+  console.log("NexaSender deployed to:", nexaSender.address);
 
   return  {
     "Verifier": verifier,

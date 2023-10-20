@@ -9,6 +9,7 @@ async function main() {
   const NexaReceiver = await ethers.getContractFactory("NexaReceiver");
   const nexaReceiver = await NexaReceiver.deploy();
   await nexaReceiver.deployed();
+  console.log("NexaReceiver deployed to:", nexaReceiver.address);
 
   return {
     "NexaReceiver": nexaReceiver

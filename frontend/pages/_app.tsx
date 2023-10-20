@@ -12,7 +12,7 @@ import {
 } from "wagmi";
 import { 
   localhost,
-  polygonMumbai 
+  avalancheFuji 
 } from "wagmi/chains";
 import {
   getDefaultWallets,
@@ -21,12 +21,12 @@ import {
 import { publicProvider } from "wagmi/providers/public";
 
 const { provider, chains } = configureChains(
-  [polygonMumbai, localhost],
+  [avalancheFuji, localhost],
   [publicProvider()]
 );
 
 const { connectors } = getDefaultWallets({
-  appName: "zkTender",
+  appName: "nexalink",
   chains
 });
 

@@ -9,7 +9,8 @@ async function main() {
   const SampleNFT = await ethers.getContractFactory("SampleNFT");
   const sampleNFT = await SampleNFT.deploy();
   await sampleNFT.deployed();
-
+  console.log("SampleNFT deployed to:", sampleNFT.address);
+  
   return {
     "SampleNFT": sampleNFT
   };
