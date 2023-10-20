@@ -6,12 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IWormholeReceiver.sol";
 
 contract NexaReceiver is IWormholeReceiver, Ownable {
-    address public NFTAddress;
     mapping(uint256 => string) tokenPayloads;
-
-    constructor (address _NFTAddress) {
-        NFTAddress = _NFTAddress;
-    }
 
     function receiveWormholeMessages(
         bytes memory payload,   

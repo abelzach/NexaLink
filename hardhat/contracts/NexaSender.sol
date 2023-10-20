@@ -18,7 +18,6 @@ interface IVerifier {
 contract NexaSender is IERC721Receiver, Ownable {
     uint256 GAS_LIMIT = 200000;
     address public NFTAddress;
-    address public targetAddress;
 
     IWormholeRelayer public wormholeRelayer;
     IVerifier public verifier;
@@ -37,10 +36,6 @@ contract NexaSender is IERC721Receiver, Ownable {
         NFTAddress = _NFTAddress;
     }
 
-    function setTargetAddress(address _targetAddress) external onlyOwner {
-        targetAddress = _targetAddress;
-    }
-
     function setWormholeRelayer(address _wormholeRelayer) external onlyOwner {
         wormholeRelayer = IWormholeRelayer(_wormholeRelayer);
     } 
@@ -50,14 +45,15 @@ contract NexaSender is IERC721Receiver, Ownable {
     }
 
     function transmit(
-        uint256 tokenId,
+        uint256 tokenId,    
         uint16 targetChain,
+        address targetAddress,
         string calldata payload
     ) 
         external 
         payable  
     {
-        require(targetAddress != address(0), "Target address not set");
+        require(targetAddress != address(0), "Invalid target address");
 
         if (IERC721(NFTAddress).ownerOf(tokenId) != address(this)) {
             require(
