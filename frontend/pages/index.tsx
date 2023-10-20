@@ -43,7 +43,7 @@ export default function Home() {
         <h1 className="mt-20 mr-20 ml-20 mb-20 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-black">The hunt is on! <span className="text-red-200 dark:text-orange-600"> Unravel the mystery </span> and claim your reward</h1>
         <input type="text" id="large-input" className="w-1/3 mb-10 block mt-10 p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Enter game ID'/>
         
-        <Link href="/game">
+        <Link href="/quiz">
             <button type="button" className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-lg px-5 py-2.5 text-center pr-12 pl-10 pt-5 pb-5">Start</button>
         </Link>        
         </center>

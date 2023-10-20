@@ -5,11 +5,14 @@ import Puzzle from './puzzle8.jsx'
 import Puzzle16 from './puzzle16.jsx'
 import { useEffect } from 'react'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { createClient } from '@supabase/supabase-js'
 
 export default function Home(this: any) {
   const [type,setType] = React.useState(16);
   const [gameWon, setGameWon] = React.useState(false);
   const [argument, setArgument] = React.useState(undefined);
+
+  const supabase = createClient('https://wpqqgvyufhwnzeasirdi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwcXFndnl1Zmh3bnplYXNpcmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc4MDk4NTAsImV4cCI6MjAxMzM4NTg1MH0.6KVZFaRHWCMns3do6qmHXOh0Tb8f6RpS-Z2oBBdmjeI');
 
   const executeShellScript = async () => {
     const serverUrl = 'http://localhost:3001';
@@ -56,6 +59,20 @@ export default function Home(this: any) {
 
   const handleGameWin = (isGameWon:any) => {
     setGameWon(isGameWon);
+    const retrieveData = async () => {
+
+      let { data: nexalink, error } = await supabase
+      .from('nexalink')
+      .select("*")
+      .eq('hash', '11128443395950822164828417665547719225271633380580181270075513790421477365393')
+      if(error) {
+        console.error("Error connecting to Supabase:", error);
+      }
+      else {
+        console.log("Data retrieved ", nexalink)
+      }
+    }
+    retrieveData();
   };
 
   return (
