@@ -3,7 +3,24 @@ import img1 from './scroll.png'
 import img2 from './bg.jpeg'
 import clock from './clock.png'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { createClient } from '@supabase/supabase-js'
+
 export default function Home() {
+
+  const supabase = createClient('https://wpqqgvyufhwnzeasirdi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwcXFndnl1Zmh3bnplYXNpcmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc4MDk4NTAsImV4cCI6MjAxMzM4NTg1MH0.6KVZFaRHWCMns3do6qmHXOh0Tb8f6RpS-Z2oBBdmjeI');
+  // console.log(supabase);
+  const testSupabaseConnection = async () => {
+    const { data, error } = await supabase.from('nexalink')
+    .insert([{ hash: "hashstring", obj: {"he":"he-man"}, completed: false },
+     ])
+    if (error) {
+      console.error("Error connecting to Supabase:", error);
+    } else {
+      console.log("Supabase connection successful");
+    }
+  };
+  
+
   return (
     <div 
       style={{
@@ -67,7 +84,7 @@ export default function Home() {
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
                 </a>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                <button  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-light-brown rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-light-brown dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-light-brown rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-light-brown dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={testSupabaseConnection()}>
                     Hide this NFT
                 </button>
             </div>
