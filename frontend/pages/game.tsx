@@ -3,15 +3,67 @@ import img1 from './scroll.png'
 import img2 from './bg.jpeg'
 import clock from './clock.png'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from '@supabase/supabase-js';
+import { buildPoseidonOpt as buildPoseidon } from 'circomlibjs';
+import shamir from 'shamir';
+import { 
+  useAccount,
+  useSigner 
+} from 'wagmi';
+import {
+  useState,
+  useEffect,
+  ChangeEvent,
+  FormEventHandler
+} from "react";
+import { ethers, Signer, Contract } from 'ethers';
+import NexaSender from "../abis/NexaSender.json";
+import { NexaSenderAddress } from "../../hardhat/contractAddress";
 
 export default function Home() {
 
+  const { data: signer } = useSigner();
+  const { address, isConnected } = useAccount();
+  const [contract, setContract] = useState<Contract>();
+  
   const supabase = createClient('https://wpqqgvyufhwnzeasirdi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwcXFndnl1Zmh3bnplYXNpcmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc4MDk4NTAsImV4cCI6MjAxMzM4NTg1MH0.6KVZFaRHWCMns3do6qmHXOh0Tb8f6RpS-Z2oBBdmjeI');
-  // console.log(supabase);
+  
+  useEffect(() => {
+    if (!isConnected) {
+        window.alert("Not connected")
+    } else {
+        const contract = new ethers.Contract(NexaSenderAddress, NexaSender, signer as Signer);
+        setContract(contract);
+    }
+  },[]);
+
   const testSupabaseConnection = async () => {
+    const obj = {
+      "addresses": [
+        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16),
+        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16)
+      ],
+      "chainIds": [
+        "2",
+        "5"
+      ],
+      "tokenContract": parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16),
+      "tokenId": "0"
+    }
+
+    const poseidon = await buildPoseidon();
+    const hash = poseidon.F.toString(poseidon([
+      obj["addresses"][0],
+      obj["chainIds"][0],
+      obj["addresses"][1],
+      obj["chainIds"][1],
+      obj["tokenContract"],
+      obj["tokenId"]
+    ]));
+    
+
     const { data, error } = await supabase.from('nexalink')
-    .insert([{ hash: "hashstring", obj: {"he":"he-man"}, completed: false },
+    .insert([{ hash, obj, completed: false },
      ])
     if (error) {
       console.error("Error connecting to Supabase:", error);
@@ -77,15 +129,17 @@ export default function Home() {
 
         <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-brown dark:border-gray-700">
             <a href="#" >
-                <Image className="rounded-t-lg bg-fill bg-black" src={clock} alt="" />
+                <Image className="rounded-t-lg bg-fill bg-black" src="https://ipfs.io/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3350.png" alt="" height="250" width="400" />
             </a>
             <div className="p-5">
                 <a href="#">
-                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
+                    <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Pudgy Penguin #3350</h5>
                 </a>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
-                <button  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-light-brown rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-light-brown dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={testSupabaseConnection()}>
-                    Hide this NFT
+                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">A collection 8888 Cute Chubby Pudgy Penquins sliding around on the freezing ETH blockchain.</p>
+                <button  
+                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-light-brown rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-light-brown dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
+                  onClick={testSupabaseConnection}>
+                    Play with this NFT
                 </button>
             </div>
         </div>

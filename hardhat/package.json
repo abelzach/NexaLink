@@ -26,5 +26,8 @@
     "hardhat": "^2.12.6",
     "snarkjs": "^0.5.0",
     "solidity-coverage": "^0.8.2"
+  },
+  "dependencies": {
+    "hardhat-abi-exporter": "^2.10.1"
   }
 }

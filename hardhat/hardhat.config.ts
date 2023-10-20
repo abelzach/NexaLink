@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "hardhat-abi-exporter";
 
 dotenv.config();
 
@@ -54,6 +55,13 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY,
+  },
+  abiExporter: {
+    path: "../frontend/abis",
+    runOnCompile: true,
+    clear: true,
+    flat: true,
+    except: ['Ownable']
   }
 };
 
