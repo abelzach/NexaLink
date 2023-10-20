@@ -5,4 +5,4 @@ input_string=$1
 echo "Received address: $input_string"
 
 
-sui client call --function mint --module managed --package 0xb6b1ce17334bdf6bb97eb7c9bdba0b971d9ea4b373e1b8d2dac424fc7fbe8eb5 --args 0xc3325c3431c4b0301d8d87df4e6c83c42c9b09b4badc45dd1a27570250e716c9 \"100\" 0x10d05c3cb8c29a9299cdbd6f70001470582c9ca799a6eda61dd6598f53e2afe8 --gas-budget 10000000
+sui client call --function mint --module nexacoin --package 0x1b0db71ce1efb4bfbd9ef9427ce159c6d48e0c076ebd0ea9d2dd8f301dabba61 --args 0x7d679eab8a1b2f12bf19378742319588782a9ff127fadaea9065e77c49f122df \"100\" 0x10d05c3cb8c29a9299cdbd6f70001470582c9ca799a6eda61dd6598f53e2afe8 --gas-budget 10000000
