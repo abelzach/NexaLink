@@ -6,15 +6,31 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IWormholeRelayer.sol";
 
+interface IVerifier {
+    function verifyProof(
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[1] memory input
+    ) external returns (bool r);
+}
+
 contract NexaSender is IERC721Receiver, Ownable {
     uint256 GAS_LIMIT = 200000;
     address public NFTAddress;
     address public targetAddress;
-    IWormholeRelayer public wormholeRelayer;
 
-    constructor (address _NFTAddress, address _wormholeRelayer) {
+    IWormholeRelayer public wormholeRelayer;
+    IVerifier public verifier;
+
+    constructor (
+        address _NFTAddress, 
+        address _wormholeRelayer,
+        address _verifier
+    ) {
         NFTAddress = _NFTAddress;
         wormholeRelayer = IWormholeRelayer(_wormholeRelayer);
+        verifier = IVerifier(_verifier);
     }
 
     function setNFTAddress(address _NFTAddress) external onlyOwner {
@@ -29,10 +45,14 @@ contract NexaSender is IERC721Receiver, Ownable {
         wormholeRelayer = IWormholeRelayer(_wormholeRelayer);
     } 
 
+    function setVerifier(address _verifier) external onlyOwner {
+        verifier = IVerifier(_verifier);
+    }
+
     function transmit(
         uint256 tokenId,
         uint16 targetChain,
-        bytes memory payload
+        string calldata payload
     ) 
         external 
         payable  
@@ -60,11 +80,28 @@ contract NexaSender is IERC721Receiver, Ownable {
         wormholeRelayer.sendPayloadToEvm{value: cost} (
             targetChain,
             targetAddress,
-            abi.encode(payload),
+            abi.encode(tokenId, payload),
             0, 
             GAS_LIMIT
         );
     }   
+
+    function claim (
+        uint256 tokenId,
+        uint[2] memory a,
+        uint[2][2] memory b,
+        uint[2] memory c,
+        uint[1] memory input
+    ) 
+        external 
+    {
+        
+        require(
+            verifier.verifyProof(a, b, c, input),
+            "Invalid proof"
+        );
+        IERC721(NFTAddress).safeTransferFrom(address(this), msg.sender, tokenId);
+    }
 
     function getQuote(
         uint16 targetChain,

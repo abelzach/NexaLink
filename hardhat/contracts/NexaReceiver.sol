@@ -7,6 +7,7 @@ import "./interfaces/IWormholeReceiver.sol";
 
 contract NexaReceiver is IWormholeReceiver, Ownable {
     address public NFTAddress;
+    mapping(uint256 => string) tokenPayloads;
 
     constructor (address _NFTAddress) {
         NFTAddress = _NFTAddress;
@@ -19,11 +20,11 @@ contract NexaReceiver is IWormholeReceiver, Ownable {
         uint16 sourceChain,  
         bytes32 deliveryHash 
     ) external payable {
-        require(additionalVaas.length == 0, "NexaReceiver: additionalVaas not supported");
-        require(sourceChain == 1, "NexaReceiver: sourceChain must be Ethereum");
-        require(deliveryHash == bytes32(0), "NexaReceiver: deliveryHash not supported");
+        (uint256 tokenId, string memory payload_) = abi.decode(payload, (uint256, string));
+        tokenPayloads[tokenId] = payload_;
+    }
 
-        (address to, uint256 tokenId) = abi.decode(payload, (address, uint256));
-        IERC721(NFTAddress).safeTransferFrom(address(this), to, tokenId);
+    function getTokenPayload(uint256 tokenId) public view returns (string memory) {
+        return tokenPayloads[tokenId];
     }
 }
