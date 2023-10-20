@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "./interfaces/IWormholeReceiver.sol";
 
-contract NexaReceiver is Ownable, IWormholeReceiver {
+contract NexaReceiver is IWormholeReceiver, Ownable {
     address public NFTAddress;
 
     constructor (address _NFTAddress) {
