@@ -41,25 +41,25 @@ export default function Home() {
   const testSupabaseConnection = async () => {
     const obj = {
       "addresses": [
-        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString(),
-        parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString()
+        "4567",
+        "9856"
       ],
       "chainIds": [
         "2",
         "5"
       ],
-      "tokenContract": parseInt("0xFaCD56154aC69F23FE9EDf441A5FcCC8ca310b9a", 16).toString(),
+      "tokenContract": "5679",
       "tokenId": "0"
     }
 
     const poseidon = await buildPoseidon();
     const hash = poseidon.F.toString(poseidon([
-      parseInt(obj["addresses"][0]),
+      obj["tokenContract"],
+      obj["tokenId"],
+      obj["addresses"][0],
       obj["chainIds"][0],
-      parseInt(obj["addresses"][1]),
-      obj["chainIds"][1],
-      parseInt(obj["tokenContract"]),
-      obj["tokenId"]
+      obj["addresses"][1],
+      obj["chainIds"][1]
     ]));
 
     const uri = "https://ipfs.io/ipfs/bafybeibc5sgo2plmjkq2tzmhrn54bk3crhnc23zd2msg4ea7a4pxrkgfna/3350";
