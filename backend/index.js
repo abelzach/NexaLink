@@ -43,17 +43,6 @@ app.get('/generate-proof', async function (req, res) {
           "circuit.wasm", 
           "circuit_0001.zkey"
       );
-      return res.send(JSON.stringify([proof, publicSignals]));
-  } catch(e) {
-      console.log(e);
-      return res.status(500);
-  }
-});
-
-app.get('/generate-calldata', async function (req, res) {
-  try {
-      const proof = JSON.parse(req?.query?.proof);
-      const publicSignals = JSON.parse(req?.query?.publicSignals);
       const calldata = await snarkjs.groth16.exportSolidityCallData(proof, publicSignals);
       return res.send(JSON.stringify(calldata));
   } catch(e) {
