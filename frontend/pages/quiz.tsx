@@ -64,15 +64,31 @@ export default function Home(this: any) {
       let { data: nexalink, error } = await supabase
       .from('nexalink')
       .select("*")
-      .eq('hash', '11128443395950822164828417665547719225271633380580181270075513790421477365393')
+      .eq('hash', '15582518040401625055355003668324900207306745206237749856927738117865793591256')
       if(error) {
         console.error("Error connecting to Supabase:", error);
       }
       else {
-        console.log("Data retrieved ", nexalink)
+        console.log("Data retrieved ", nexalink[0].obj);
+        let hashobj = nexalink[0].obj
+        hashobj.gameHash =  nexalink[0].hash
+        const serverUrl = 'http://localhost:3001';
+        try {
+          const response = await fetch(serverUrl + `/generate-proof?inputs=${JSON.stringify(hashobj)}`);
+          if (response.ok) {
+            const data = await response.text();
+            console.log(data);
+            window.alert("Worked");
+          } else {
+            console.error('Server error:', response.status, response.statusText);
+          }
+        } catch (error) {
+          console.error('Request error:', error);
+        }
       }
     }
     retrieveData();
+    
   };
 
   return (
