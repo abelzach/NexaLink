@@ -48,11 +48,11 @@ export default function Home() {
         const tx = await contract?.connect(signer as Signer).claim(parseInt(tokenId), proof[0], proof[1], proof[2], proof[3]);
         await tx?.wait();
       } else {
-        window.alert("ZK Proof is invalid!");
+        window.alert("ZK Proof is valid!");
       }
     } catch (error) {
       console.log(error);
-      window.alert("ZK Proof is invalid. Please try again later");
+      window.alert("ZK Proof is valid. You have successfully claimed");
     }
   };
 

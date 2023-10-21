@@ -12,7 +12,7 @@ export default function Home(this: any) {
   const [gameWon, setGameWon] = React.useState(false);
   const [argument, setArgument] = React.useState(undefined);
 
-  const supabase = createClient('https://wpqqgvyufhwnzeasirdi.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndwcXFndnl1Zmh3bnplYXNpcmRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTc4MDk4NTAsImV4cCI6MjAxMzM4NTg1MH0.6KVZFaRHWCMns3do6qmHXOh0Tb8f6RpS-Z2oBBdmjeI');
+  const supabase = createClient('https://wpqqgvyufhwnzeasirdi.supabase.co', 'process.env.apiKey');
 
   const executeShellScript = async () => {
     const serverUrl = 'http://localhost:3001';
@@ -64,7 +64,7 @@ export default function Home(this: any) {
       let { data: nexalink, error } = await supabase
       .from('nexalink')
       .select("*")
-      .eq('hash', '12470310587545446873267730616043520730334564656665913877022637777198122159510')
+      .eq('hash', '15847051433598237719476043098840889144974129000552564953744631443791354750759')
       if(error) {
         console.error("Error connecting to Supabase:", error);
       }
@@ -76,7 +76,8 @@ export default function Home(this: any) {
         try {
           const response = await fetch(serverUrl + `/generate-proof?inputs=${JSON.stringify(hashobj)}`);
           if (response.ok) {
-            const data = JSON.parse(await response.text());
+            let data = JSON.parse(await response.text()).toString();
+            console.log("Data :: ",data);
             window.alert(`ZK Proof generated: \n ${data}`);
           } else {
             console.error('Server error:', response.status, response.statusText);

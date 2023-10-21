@@ -51,7 +51,7 @@ class Puzzle extends Component {
       // Check if the current positions match the correct order
       const isGameWon = _.isEqual(positions, correctOrder);
   
-      if (!isGameWon) {
+      if (isGameWon) {
         this.props.onGameWin(true);
         window.alert('You Win!!!');
       }

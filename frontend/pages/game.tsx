@@ -50,7 +50,7 @@ export default function Home() {
         "5"
       ],
       "tokenContract": "1234",
-      "tokenId": "0"
+      "tokenId": "2"
     }
 
     const poseidon = await buildPoseidon();
@@ -68,23 +68,23 @@ export default function Home() {
     const secretBytes = utf8Encoder.encode(uri);
     const parts = split(randomBytes, 2, 2, secretBytes);
 
-    // const tx1 = await contract?.connect(signer as Signer).transmit(
-    //   0,
-    //   2,
-    //   NexaReceiverAddress,
-    //   parts[1].toString(),
-    //   { value: ethers.utils.parseEther("0.1")}
-    // )
-    // await tx1.wait();
+    const tx1 = await contract?.connect(signer as Signer).transmit(
+      2,
+      2,
+      NexaReceiverAddress,
+      parts[1].toString(),
+      { value: ethers.utils.parseEther("0.1")}
+    )
+    await tx1.wait();
 
-    // const tx2 = await contract?.connect(signer as Signer).transmit(
-    //   0,
-    //   5,
-    //   NexaReceiverAddress,
-    //   parts[2].toString(),
-    //   { value: ethers.utils.parseEther("0.01")}
-    // )
-    // await tx2.wait();
+    const tx2 = await contract?.connect(signer as Signer).transmit(
+      2,
+      5,
+      NexaReceiverAddress,
+      parts[2].toString(),
+      { value: ethers.utils.parseEther("0.01")}
+    )
+    await tx2.wait();
 
     const { data, error } = await supabase.from('nexalink')
     .insert([{ hash, obj, completed: false },
@@ -96,6 +96,7 @@ export default function Home() {
     }
 
     window.alert(`Created game with hash ${hash}`);
+    console.log(hash);
 
     handleButtonClick();
 
