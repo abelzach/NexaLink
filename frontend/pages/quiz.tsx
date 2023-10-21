@@ -64,7 +64,7 @@ export default function Home(this: any) {
       let { data: nexalink, error } = await supabase
       .from('nexalink')
       .select("*")
-      .eq('hash', '15582518040401625055355003668324900207306745206237749856927738117865793591256')
+      .eq('hash', '12470310587545446873267730616043520730334564656665913877022637777198122159510')
       if(error) {
         console.error("Error connecting to Supabase:", error);
       }
@@ -76,9 +76,8 @@ export default function Home(this: any) {
         try {
           const response = await fetch(serverUrl + `/generate-proof?inputs=${JSON.stringify(hashobj)}`);
           if (response.ok) {
-            const data = await response.text();
-            console.log(data);
-            window.alert("Worked");
+            const data = JSON.parse(await response.text());
+            window.alert(`ZK Proof generated: \n ${data}`);
           } else {
             console.error('Server error:', response.status, response.statusText);
           }

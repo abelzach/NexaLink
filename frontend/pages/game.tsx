@@ -42,14 +42,14 @@ export default function Home() {
   const testSupabaseConnection = async () => {
     const obj = {
       "addresses": [
-        "4567",
-        "9856"
+        "5566",
+        "9988"
       ],
       "chainIds": [
         "2",
         "5"
       ],
-      "tokenContract": "5679",
+      "tokenContract": "1234",
       "tokenId": "0"
     }
 
