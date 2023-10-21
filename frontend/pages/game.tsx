@@ -1,11 +1,12 @@
 import Image from 'next/image'
 import img1 from './scroll.png'
 import img2 from './bg.jpeg'
-import clock from './clock.png'
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { createClient } from '@supabase/supabase-js';
 import { buildPoseidonOpt as buildPoseidon } from 'circomlibjs';
 import { split, join } from 'shamir';
+import { useRouter } from 'next/router'; 
+import ball from './animation.gif';
 import { randomBytes } from 'crypto';
 import { 
   useAccount,
@@ -95,8 +96,19 @@ export default function Home() {
     }
 
     window.alert(`Created game with hash ${hash}`);
+
+    handleButtonClick();
+
   };
   
+  const [showGif, setShowGif] = useState(false);
+  const router = useRouter();
+  const handleButtonClick = () => {
+    setShowGif(true);
+    setTimeout(() => {
+      router.push('/');
+    }, 2000); 
+  };
 
   return (
     <div 
@@ -151,7 +163,16 @@ export default function Home() {
         /> */}
             {/* <input type="text" id="large-input" className="w-1/2 block mt-10 p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder='Answer goes here'/> */}
         </div>
-
+        {showGif && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black z-50">
+          <Image
+            src={ball}
+            alt="Loading GIF"
+            width={600}
+            height={600}
+          />
+        </div>
+      )}
         <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-brown dark:border-gray-700">
             <a href="#" >
                 <Image className="rounded-t-lg bg-fill bg-black" src="https://ipfs.io/ipfs/QmNf1UsmdGaMbpatQ6toXSkzDpizaGmC9zfunCyoz1enD5/penguin/3350.png" alt="" height="250" width="400" />
